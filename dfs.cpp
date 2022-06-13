@@ -1,32 +1,37 @@
-#include <bits/stdc++.h>
-
+#include<bits/stdc++.h>
 using namespace std;
-
-void addEdge(vector <int> adj[],int u,int v)
+ 
+// A utility function to add an edge in an
+// undirected graph.
+void addEdge(vector<int> adj[], int u, int v)
 {
-	adj[u].push_back(v);
-	adj[v].push_back(u);
+    adj[u].push_back(v);
+    adj[v].push_back(u);
 }
-
-void dfs(vector <int> adj[],int u,bool visited[])
+ 
+// A utility function to do DFS of graph
+// recursively from a given vertex u.
+void DFSUtil(int u, vector<int> adj[],
+                    vector<bool> &visited)
 {
-	visited[u]=true;
-	cout<<u<<" ";
-	for(auto it=adj[u].begin();it!=adj[u].end;it++)
-	{
-		if(!visited[*it])
-		{
-			dfs(adj,*it,visited);
-		}
-	}
-	/*for(auto v:adj[u])
-	{
-		if(!visited[*it])
-		{
-			dfs(adj,v,visited);
-		}
-	}*/
+    visited[u] = true;
+    cout << u << " ";
+    for (int i=0; i<adj[u].size(); i++)
+        if (visited[adj[u][i]] == false)
+            DFSUtil(adj[u][i], adj, visited);
 }
+ 
+// This function does DFSUtil() for all
+// unvisited vertices.
+void DFS(vector<int> adj[], int V)
+{
+    vector<bool> visited(V, false);
+    for (int u=0; u<V; u++)
+        if (visited[u] == false)
+            DFSUtil(u, adj, visited);
+}
+ 
+// Driver code
 int main()
 {
 	int V,E;
@@ -42,13 +47,6 @@ int main()
 		cin>>u>>v;
 		addEdge(adj,u,v);
 	}
-	cout<<"Vertices in dfs traversal";
-	for(int i=0;i<V;i++)
-	{
-		if(!visited[i])
-		{
-			dfs(adj,i,visited);
-		}
-	}
-	return 0;
+    DFS(adj, V);
+    return 0;
 }
